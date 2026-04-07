@@ -1,0 +1,114 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
+
+const translations = {
+  en: {
+    title: "Robux Shop",
+    description: "Select a pack and follow the steps",
+    buy: "Buy",
+    payment: "Payment Method",
+    iban: "Bank Transfer (IBAN)",
+    cash: "Cash (local only)",
+    username: "Your Roblox Username",
+    proof: "Proof (screenshot link)",
+    submit: "Submit Order",
+    instructions: "1. Click the button\n2. Buy the gamepass\n3. Send proof",
+  },
+  fr: {
+    title: "Boutique Robux",
+    description: "Choisissez un pack et suivez les étapes",
+    buy: "Acheter",
+    payment: "Méthode de paiement",
+    iban: "Virement bancaire (IBAN)",
+    cash: "Espèces (local uniquement)",
+    username: "Pseudo Roblox",
+    proof: "Preuve (lien screenshot)",
+    submit: "Envoyer",
+    instructions: "1. Clique sur le bouton\n2. Achète le gamepass\n3. Envoie la preuve",
+  },
+  nl: {
+    title: "Robux Winkel",
+    description: "Kies een pakket en volg de stappen",
+    buy: "Kopen",
+    payment: "Betaalmethode",
+    iban: "Bankoverschrijving (IBAN)",
+    cash: "Contant (alleen lokaal)",
+    username: "Roblox gebruikersnaam",
+    proof: "Bewijs (screenshot link)",
+    submit: "Versturen",
+    instructions: "1. Klik op de knop\n2. Koop de gamepass\n3. Stuur bewijs",
+  },
+};
+
+// EDIT PRICES HERE
+const packages = [
+  { amount: 700, price: "5€", link: "https://roblox.com/gamepass/YOUR_LINK_1" },
+  { amount: 1400, price: "10€", link: "https://roblox.com/gamepass/YOUR_LINK_2" },
+  { amount: 2100, price: "15€", link: "https://roblox.com/gamepass/YOUR_LINK_3" },
+];
+
+export default function RobuxShop() {
+  const [lang, setLang] = useState("en");
+  const [selectedPack, setSelectedPack] = useState(null);
+  const t = translations[lang];
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-100">
+      <div className="absolute top-4 right-4">
+        <Select onValueChange={(value) => setLang(value)} defaultValue="en">
+          <SelectTrigger className="w-40">Language</SelectTrigger>
+          <SelectContent>
+            <SelectItem value="en">English</SelectItem>
+            <SelectItem value="fr">Français</SelectItem>
+            <SelectItem value="nl">Nederlands</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <Card className="w-full max-w-md">
+        <CardContent className="p-6 space-y-4">
+          <h1 className="text-2xl font-bold">{t.title}</h1>
+          <p>{t.description}</p>
+
+          {/* Packages */}
+          <div className="space-y-2">
+            {packages.map((pack, i) => (
+              <Button key={i} variant="outline" onClick={() => setSelectedPack(pack)} className="w-full">
+                {pack.amount} Robux - {pack.price}
+              </Button>
+            ))}
+          </div>
+
+          {/* Selected Package */}
+          {selectedPack && (
+            <div className="space-y-3 border p-3 rounded">
+              <p><strong>{selectedPack.amount} Robux</strong></p>
+
+              <div className="text-sm whitespace-pre-line bg-gray-50 p-2 rounded">
+                {t.instructions}
+              </div>
+
+              <a href={selectedPack.link} target="_blank" className="text-blue-500 underline">
+                Open Gamepass
+              </a>
+
+              <Input placeholder={t.username} />
+              <Textarea placeholder={t.proof} />
+
+              <select className="w-full border p-2 rounded">
+                <option>{t.iban}</option>
+                <option>{t.cash}</option>
+              </select>
+
+              <Button className="w-full">{t.submit}</Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
