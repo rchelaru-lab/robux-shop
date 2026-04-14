@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Robux Shop</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    input, textarea, select {
+      width: 100%;
+      margin-top: 5px;
+      padding: 8px;
+    }
+    .top-right {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-right">
+  <select id="language">
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+    <option value="nl">Nederlands</option>
+  </select>
+</div>
+
+<div class="card">
+  <h1 id="title"></h1>
+  <p id="description"></p>
+
+  <div id="packages"></div>
+
+  <div id="orderBox" class="hidden">
+    <p id="selectedPack"></p>
+
+    <div id="instructions" style="background:#eee; padding:10px;"></div>
+
+    <a id="gamepassLink" target="_blank">Open Gamepass</a>
+
+    <input id="username" placeholder="">
+    <textarea id="proof" placeholder=""></textarea>
+
+    <select id="payment">
+      <option id="iban"></option>
+      <option id="cash"></option>
+    </select>
+
+    <button id="submit"></button>
+  </div>
+</div>
+
+<script>
+const translations = {
+  en: {
+    title: "Robux Shop",
+    description: "Select a pack and follow the steps",
+    submit: "Submit Order",
+    iban: "Bank Transfer (IBAN)",
+    cash: "Cash (local only)",
+    username: "Your Roblox Username",
+    proof: "Proof (screenshot link)",
+    instructions: "1. Click the button\n2. Buy the gamepass\n3. Send proof",
+  },
+  fr: {
+    title: "Boutique Robux",
+    description: "Choisissez un pack et suivez les étapes",
+    submit: "Envoyer",
+    iban: "Virement bancaire (IBAN)",
+    cash: "Espèces (local uniquement)",
+    username: "Pseudo Roblox",
+    proof: "Preuve (lien screenshot)",
+    instructions: "1. Clique sur le bouton\n2. Achète le gamepass\n3. Envoie la preuve",
+  },
+  nl: {
+    title: "Robux Winkel",
+    description: "Kies een pakket en volg de stappen",
+    submit: "Versturen",
+    iban: "Bankoverschrijving (IBAN)",
+    cash: "Contant (alleen lokaal)",
+    username: "Roblox gebruikersnaam",
+    proof: "Bewijs (screenshot link)",
+    instructions: "1. Klik op de knop\n2. Koop de gamepass\n3. Stuur bewijs",
+  },
+};
+
+const packages = [
+  { amount: 700, price: "5€", link: "https://roblox.com/gamepass/YOUR_LINK_1" },
+  { amount: 1400, price: "10€", link: "https://roblox.com/gamepass/YOUR_LINK_2" },
+  { amount: 2100, price: "15€", link: "https://roblox.com/gamepass/YOUR_LINK_3" },
+];
+
+let currentLang = "en";
+
+function updateText() {
+  const t = translations[currentLang];
+
+  document.getElementById("title").innerText = t.title;
+  document.getElementById("description").innerText = t.description;
+  document.getElementById("submit").innerText = t.submit;
+  document.getElementById("iban").innerText = t.iban;
+  document.getElementById("cash").innerText = t.cash;
+  document.getElementById("username").placeholder = t.username;
+  document.getElementById("proof").placeholder = t.proof;
+  document.getElementById("instructions").innerText = t.instructions;
+}
+
+function loadPackages() {
+  const container = document.getElementById("packages");
+  container.innerHTML = "";
+
+  packages.forEach(pack => {
+    const btn = document.createElement("button");
+    btn.innerText = `${pack.amount} Robux - ${pack.price}`;
+    btn.onclick = () => selectPack(pack);
+    container.appendChild(btn);
+  });
+}
+
+function selectPack(pack) {
+  document.getElementById("orderBox").classList.remove("hidden");
+  document.getElementById("selectedPack").innerText = pack.amount + " Robux";
+  document.getElementById("gamepassLink").href = pack.link;
+}
+
+document.getElementById("language").addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  updateText();
+});
+
+loadPackages();
+updateText();
+</script>
+
+</body>
+</html>
