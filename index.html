@@ -1,160 +1,142 @@
+<!-- ===================== INDEX.HTML ===================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Robux Shop</title>
   <style>
     body {
-      font-family: Arial;
-      background: #f3f4f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      color: white;
     }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    a { color: white; text-decoration: none; margin-left: 15px; }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
     .card {
       background: white;
+      color: black;
       padding: 20px;
-      border-radius: 10px;
-      width: 350px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
     }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
     button {
-      width: 100%;
+      background: #4f46e5;
+      color: white;
+      border: none;
       padding: 10px;
-      margin-top: 5px;
+      border-radius: 10px;
       cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
     }
-    .hidden {
+
+    .order-box {
+      margin-top: 30px;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 15px;
       display: none;
     }
+
     input, textarea, select {
       width: 100%;
-      margin-top: 5px;
-      padding: 8px;
-    }
-    .top-right {
-      position: absolute;
-      top: 10px;
-      right: 10px;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
 
-<div class="top-right">
-  <select id="language">
-    <option value="en">English</option>
-    <option value="fr">Français</option>
-    <option value="nl">Nederlands</option>
-  </select>
-</div>
+<header>
+  <h2>Robux Shop</h2>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+  </div>
+</header>
 
-<div class="card">
-  <h1 id="title"></h1>
-  <p id="description"></p>
+<div class="container">
+  <h1>Buy Robux Easily 💎</h1>
+  <p>Select your package below</p>
 
-  <div id="packages"></div>
+  <div class="packages" id="packages"></div>
 
-  <div id="orderBox" class="hidden">
-    <p id="selectedPack"></p>
+  <div class="order-box" id="orderBox">
+    <h3 id="selected"></h3>
+    <p>1. Click buy<br>2. Purchase gamepass<br>3. Send proof</p>
 
-    <div id="instructions" style="background:#eee; padding:10px;"></div>
+    <a id="link" target="_blank">👉 Open Gamepass</a>
 
-    <a id="gamepassLink" target="_blank">Open Gamepass</a>
+    <input placeholder="Your Roblox Username">
+    <textarea placeholder="Screenshot proof link"></textarea>
 
-    <input id="username" placeholder="">
-    <textarea id="proof" placeholder=""></textarea>
-
-    <select id="payment">
-      <option id="iban"></option>
-      <option id="cash"></option>
+    <select>
+      <option>Bank Transfer (IBAN)</option>
+      <option>Cash</option>
     </select>
 
-    <button id="submit"></button>
+    <button>Submit Order</button>
   </div>
 </div>
 
 <script>
-const translations = {
-  en: {
-    title: "Robux Shop",
-    description: "Select a pack and follow the steps",
-    submit: "Submit Order",
-    iban: "Bank Transfer (IBAN)",
-    cash: "Cash (local only)",
-    username: "Your Roblox Username",
-    proof: "Proof (screenshot link)",
-    instructions: "1. Click the button\n2. Buy the gamepass\n3. Send proof",
-  },
-  fr: {
-    title: "Boutique Robux",
-    description: "Choisissez un pack et suivez les étapes",
-    submit: "Envoyer",
-    iban: "Virement bancaire (IBAN)",
-    cash: "Espèces (local uniquement)",
-    username: "Pseudo Roblox",
-    proof: "Preuve (lien screenshot)",
-    instructions: "1. Clique sur le bouton\n2. Achète le gamepass\n3. Envoie la preuve",
-  },
-  nl: {
-    title: "Robux Winkel",
-    description: "Kies een pakket en volg de stappen",
-    submit: "Versturen",
-    iban: "Bankoverschrijving (IBAN)",
-    cash: "Contant (alleen lokaal)",
-    username: "Roblox gebruikersnaam",
-    proof: "Bewijs (screenshot link)",
-    instructions: "1. Klik op de knop\n2. Koop de gamepass\n3. Stuur bewijs",
-  },
-};
-
 const packages = [
-  { amount: 700, price: "5€", link: "https://roblox.com/gamepass/YOUR_LINK_1" },
-  { amount: 1400, price: "10€", link: "https://roblox.com/gamepass/YOUR_LINK_2" },
-  { amount: 2100, price: "15€", link: "https://roblox.com/gamepass/YOUR_LINK_3" },
+  { amount: 700, price: "5€", link: "#" },
+  { amount: 1400, price: "10€", link: "#" },
+  { amount: 2100, price: "15€", link: "#" },
 ];
 
-let currentLang = "en";
+const container = document.getElementById("packages");
 
-function updateText() {
-  const t = translations[currentLang];
-
-  document.getElementById("title").innerText = t.title;
-  document.getElementById("description").innerText = t.description;
-  document.getElementById("submit").innerText = t.submit;
-  document.getElementById("iban").innerText = t.iban;
-  document.getElementById("cash").innerText = t.cash;
-  document.getElementById("username").placeholder = t.username;
-  document.getElementById("proof").placeholder = t.proof;
-  document.getElementById("instructions").innerText = t.instructions;
-}
-
-function loadPackages() {
-  const container = document.getElementById("packages");
-  container.innerHTML = "";
-
-  packages.forEach(pack => {
-    const btn = document.createElement("button");
-    btn.innerText = `${pack.amount} Robux - ${pack.price}`;
-    btn.onclick = () => selectPack(pack);
-    container.appendChild(btn);
-  });
-}
-
-function selectPack(pack) {
-  document.getElementById("orderBox").classList.remove("hidden");
-  document.getElementById("selectedPack").innerText = pack.amount + " Robux";
-  document.getElementById("gamepassLink").href = pack.link;
-}
-
-document.getElementById("language").addEventListener("change", (e) => {
-  currentLang = e.target.value;
-  updateText();
+packages.forEach(p => {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `
+    <h3>${p.amount} Robux</h3>
+    <p>${p.price}</p>
+    <button onclick="selectPack('${p.amount}','${p.link}')">Buy</button>
+  `;
+  container.appendChild(div);
 });
 
-loadPackages();
-updateText();
+function selectPack(amount, link) {
+  document.getElementById("orderBox").style.display = "block";
+  document.getElementById("selected").innerText = amount + " Robux";
+  document.getElementById("link").href = link;
+}
 </script>
 
 </body>
